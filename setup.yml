@@ -1,0 +1,48 @@
+---
+
+- hosts: localhost
+  connection: local
+  tasks:
+  - apt:
+      name: tmux
+    become: yes
+    when: ansible_os_family == 'Debian'
+  - yum:
+      name: tmux
+    become: yes
+    when: ansible_os_family == 'RedHat'
+  - git:
+      repo: 'https://github.com/tmux-plugins/{{ item.name }}'
+      dest: ~/.tmux/plugins/{{ item.name }}
+      version: "{{ item.version|default(omit) }}"
+    with_items:
+      - { name: 'tpm' }
+      - { name: 'tmux-sensible' }
+      - { name: 'tmux-copycat', version: 'tmux-23' }
+      - { name: 'tmux-yank' }
+      - { name: 'tmux-prefix-highlight' }
+      - { name: 'tmux-pain-control' }
+  - copy:
+      dest: ~/.tmux.conf
+      content: |
+        set -g allow-rename off
+
+        setw -g mode-keys vi
+
+        set -g mouse on
+        bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
+        bind -n WheelDownPane select-pane -t= \; send-keys -M
+
+        # List of plugins
+        set -g @plugin 'tmux-plugins/tpm'
+        set -g @plugin 'tmux-plugins/tmux-sensible'
+        set -g @plugin 'tmux-plugins/tmux-copycat'
+        set -g @plugin 'tmux-plugins/tmux-yank'
+        set -g @shell_mode 'vi'
+        set -g @plugin 'tmux-plugins/tmux-resurrect'
+        set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+        set -g status-right '#{prefix_highlight} | %a %Y-%m-%d %H:%M'
+        set -g @plugin 'tmux-plugins/tmux-pain-control'
+
+        # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+        run '~/.tmux/plugins/tpm/tpm'
