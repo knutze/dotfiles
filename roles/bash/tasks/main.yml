@@ -1,0 +1,10 @@
+---
+
+- blockinfile:
+    path: ~/.bashrc
+    block: |
+      {% for alias in aliases %}
+      alias {{ alias.name }}='{{ alias.value }}'
+      {% endfor %}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK [alias]"
+

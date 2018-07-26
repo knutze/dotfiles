@@ -1,0 +1,17 @@
+---
+
+- package:
+    name: tmux
+    state: present
+  become: yes
+
+- git:
+    repo: "https://github.com/{{ item.owner }}/{{ item.name }}"
+    dest: "~/.tmux/plugins/{{ item.name }}"
+    version: "{{ item.version|default(omit) }}"
+  with_items: "{{ tmux_plugins }}"
+
+- template:
+    src: tmux.conf.j2
+    dest: ~/.tmux.conf
+

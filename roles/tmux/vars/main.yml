@@ -1,0 +1,11 @@
+---
+
+tmux_plugins:
+  - { owner: 'tmux-plugins', name: 'tpm' }
+  - { owner: 'tmux-plugins', name: 'tmux-sensible' }
+  - { owner: 'tmux-plugins', name: 'tmux-copycat', version: 'tmux-23' }
+  - { owner: 'tmux-plugins', name: 'tmux-yank' }
+  - { owner: 'tmux-plugins', name: 'tmux-resurrect' }
+  - { owner: 'tmux-plugins', name: 'tmux-prefix-highlight' }
+  - { owner: 'tmux-plugins', name: 'tmux-pain-control' }
+

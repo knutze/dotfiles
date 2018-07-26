@@ -1,0 +1,11 @@
+---
+
+- package:
+    name: vim
+    state: present
+  become: yes
+
+- template:
+    src: vimrc.j2
+    dest: ~/.vimrc
+

@@ -1,0 +1,12 @@
+---
+
+aliases:
+  - { name: 'ls', value: 'ls -p --color=auto --group-directories-first' }
+  - { name: 'la', value: 'ls -pA --color=auto --group-directories-first' }
+  - { name: 'll', value: 'ls -plh --color=auto --group-directories-first --time-style=long-iso' }
+  - { name: 'lla', value: 'ls -plhA --color=auto --group-directories-first --time-style=long-iso' }
+  - { name: 'grep', value: 'grep --color=auto' }
+  - { name: 'egrep', value: 'egrep --color=auto' }
+  - { name: 'fgrep', value: 'fgrep --color=auto' }
+  - { name: 'rgrep', value: 'rgrep --color=auto' }
+
