@@ -9,3 +9,5 @@
     src: vimrc.j2
     dest: ~/.vimrc
 
+- command: vim +PlugInstall +qall
+

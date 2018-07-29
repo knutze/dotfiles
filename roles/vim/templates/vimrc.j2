@@ -1,4 +1,4 @@
-" vim-bootstrap b990cad
+" vim-bootstrap
 
 "*****************************************************************************
 "" Vim-PLug core
@@ -75,7 +75,10 @@ endif
 Plug 'honza/vim-snippets'
 
 "" Color
-Plug 'tomasr/molokai'
+Plug 'morhetz/gruvbox'
+
+"" Dev Icons
+Plug 'ryanoasis/vim-devicons'
 
 "*****************************************************************************
 "" Custom bundles
@@ -94,7 +97,6 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 if filereadable(expand("~/.vimrc.local.bundles"))
   source ~/.vimrc.local.bundles
 endif
-Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -118,7 +120,7 @@ set backspace=indent,eol,start
 
 "" Tabs. May be overriten by autocmd rules
 set tabstop=2
-set softtabstop=0
+set softtabstop=2
 set shiftwidth=2
 set expandtab
 
@@ -161,7 +163,9 @@ set number
 
 let no_buffers_menu=1
 if !exists('g:not_finish_vimplug')
-  colorscheme molokai
+  colorscheme gruvbox
+  set background=dark
+  let g:gruvbox_contrast_dark = 'hard'
 endif
 
 set mousemodel=popup
@@ -485,36 +489,63 @@ let python_highlight_all = 1
 
 
 "*****************************************************************************
+"" Convenience variables
+"*****************************************************************************
+
+let NERDTreeMinimalUI = 1
+
+" vim-airline
+let g:airline_powerline_fonts = 1
+
+" https://nerdfonts.com/
+" https://github.com/ryanoasis/powerline-extra-symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+
+" Dev Icons
+" https://github.com/ryanoasis/vim-devicons/wiki/Extra-Configuration
+let g:webdevicons_enable_nerdtree = 1
+
+let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = ''
+
+if !exists('g:WebDevIconsUnicodeDecorateFileNodesExactSymbols')
+  let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
+endif
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitignore'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitconfig'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['dockerfile'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['docker-compose.yml'] = ''
+
+if !exists('g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols')
+  let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {}
+endif
+let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*vimrc.*'] = ''
+
+if !exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
+  let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+endif
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['j2'] = ''
+
+
+"*****************************************************************************
 "*****************************************************************************
 
 "" Include user's local vim config
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
-let NERDTreeMinimalUI = 1
-let g:webdevicons_enable_nerdtree = 1
-
-"*****************************************************************************
-"" Convenience variables
-"*****************************************************************************
-
-" vim-airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_powerline_fonts = 1
-
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
 

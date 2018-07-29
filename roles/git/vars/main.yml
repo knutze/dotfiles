@@ -1,0 +1,11 @@
+---
+
+git_configs:
+  - { name: 'core.pager', value: 'less -r' }
+  - { name: 'core.editor', value: 'vi' }
+  - { name: 'core.excludesfile', value: '~/.gitignore' }
+  - { name: 'color.ui', value: 'auto' }
+  - { name: 'fetch.prune', value: 'true' }
+  - { name: 'push.default', value: 'current' }
+  - { name: 'merge.ff', value: 'false' }
+
