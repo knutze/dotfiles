@@ -1,22 +1,15 @@
 ---
 
+- file:
+    src: "{{ role_path }}/files/bashrc"
+    dest: ~/.bash_dotfiles
+    state: link
+
 - blockinfile:
     path: ~/.bashrc
     block: |
-      ## aliases
-      {% for alias in aliases %}
-      alias {{ alias.name }}='{{ alias.value }}'
-      {% endfor %}
-      ## variables
-      {% for var in local_vars %}
-      {{ var.name }}="{{ var.value }}"
-      {% endfor %}
-      ## environment variables
-      {% for var in env_vars %}
-      export {{ var.name }}="{{ var.value }}"
-      {% endfor %}
-      ## palette
-      palette=$(find ~/.vim/ -name 'gruvbox_256palette.sh')
-      [[ -e ${palette} ]] && . "${palette}"
+      if [[ -f ~/.bash_dotfiles ]]; then
+        . ~/.bash_dotfiles
+      fi
     marker: '# {mark} ANSIBLE MANAGED BLOCK [dotfiles]'
 

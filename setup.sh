@@ -17,3 +17,5 @@ ansible-playbook -i localhost, -v setup.yml
 
 exec ${SHELL}
 
+vim +PlugInstall +qall
+

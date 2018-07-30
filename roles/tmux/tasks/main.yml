@@ -11,7 +11,8 @@
     version: "{{ item.version|default(omit) }}"
   with_items: "{{ tmux_plugins }}"
 
-- template:
-    src: tmux.conf.j2
+- file:
+    src: "{{ role_path }}/files/tmux.conf"
     dest: ~/.tmux.conf
+    state: link
 

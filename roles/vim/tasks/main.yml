@@ -5,9 +5,8 @@
     state: present
   become: yes
 
-- template:
-    src: vimrc.j2
+- file:
+    src: "{{ role_path }}/files/vimrc"
     dest: ~/.vimrc
-
-- command: vim +PlugInstall +qall
+    state: link
 
