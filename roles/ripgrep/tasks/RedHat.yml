@@ -1,0 +1,18 @@
+---
+
+- yum:
+    name: yum-utils
+    state: present
+  become: yes
+
+- command: "yum-config-manager --add-repo {{ rg_repo_url }}"
+  args:
+    chdir: "/etc/yum.repos.d"
+    creates: "{{ rg_repo_file }}"
+  become: yes
+
+- yum:
+    name: ripgrep
+    state: present
+  become: yes
+

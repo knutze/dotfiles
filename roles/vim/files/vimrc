@@ -19,7 +19,8 @@ if !filereadable(vimplug_exists)
   endif
   echo "Installing Vim-Plug..."
   echo ""
-  silent !\curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !\curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   let g:not_finish_vimplug = "yes"
 
   autocmd VimEnter * PlugInstall
@@ -55,7 +56,7 @@ else
 endif
 let g:make = 'gmake'
 if exists('make')
-        let g:make = 'make'
+  let g:make = 'make'
 endif
 Plug 'Shougo/vimproc.vim', {'do': g:make}
 
@@ -143,9 +144,9 @@ set noswapfile
 set fileformats=unix,dos,mac
 
 if exists('$SHELL')
-    set shell=$SHELL
+  set shell=$SHELL
 else
-    set shell=/bin/sh
+  set shell=/bin/sh
 endif
 
 " session management
@@ -186,7 +187,6 @@ else
   let g:indentLine_concealcursor = 0
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
-
 
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
@@ -254,13 +254,14 @@ cnoreabbrev Q q
 cnoreabbrev Qall qall
 
 "" NERDTree configuration
+let g:NERDTreeMinimalUI = 1
 let g:NERDTreeChDirMode=2
 let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_focus_on_files=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 30
+let g:NERDTreeWinSize = 40
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
@@ -452,6 +453,9 @@ vnoremap K :m '<-2<CR>gv=gv
 "" Open current line on GitHub
 nnoremap <Leader>o :.Gbrowse<CR>
 
+"" Disable
+nnoremap Q <Nop>
+
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
@@ -480,6 +484,22 @@ let g:jedi#smart_auto_mappings = 0
 let g:syntastic_python_checkers=['python', 'flake8']
 
 " vim-airline
+let g:airline_mode_map = {
+  \ '__': '-',
+  \ 'n': 'N',
+  \ 'i': 'I',
+  \ 'R': 'R',
+  \ 'c': 'C',
+  \ 'v': 'V',
+  \ 'V': 'V',
+  \ '': 'V',
+  \ 's': 'S',
+  \ 'S': 'S',
+  \ '': 'S',
+  \ 't': 'T'
+  \ }
+
+let g:airline#extensions#hunks#enabled = 0
 let g:airline#extensions#virtualenv#enabled = 1
 
 " Syntax highlight
@@ -487,40 +507,34 @@ let g:airline#extensions#virtualenv#enabled = 1
 let g:polyglot_disabled = ['python']
 let python_highlight_all = 1
 
-
-"*****************************************************************************
-"" Convenience variables
-"*****************************************************************************
-
-let NERDTreeMinimalUI = 1
-
-" vim-airline
-let g:airline_powerline_fonts = 1
-
 " https://nerdfonts.com/
 " https://github.com/ryanoasis/powerline-extra-symbols
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" airline symbols
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
-
+let g:airline_symbols.crypt = ''
+let g:airline_symbols.paste = ''
+let g:airline_symbols.spell = '暈'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 
 " Dev Icons
 " https://github.com/ryanoasis/vim-devicons/wiki/Extra-Configuration
 let g:webdevicons_enable_nerdtree = 1
-
 let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = ''
-
 if !exists('g:WebDevIconsUnicodeDecorateFileNodesExactSymbols')
   let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
 endif
@@ -528,18 +542,15 @@ let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitignore'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitconfig'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['dockerfile'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['docker-compose.yml'] = ''
-
 if !exists('g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols')
   let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols = {}
 endif
 let g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols['.*vimrc.*'] = ''
-
 if !exists('g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols')
   let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
 endif
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['j2'] = ''
-
 
 "*****************************************************************************
 "*****************************************************************************
@@ -548,4 +559,9 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['j2'] = ''
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+
+
+"*****************************************************************************
+"" Convenience variables
+"*****************************************************************************
 
