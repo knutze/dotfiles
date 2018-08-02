@@ -1,0 +1,11 @@
+---
+
+- package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - autoconf
+    - automake
+    - pkg-config
+  become: yes
+
