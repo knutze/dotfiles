@@ -1,6 +1,7 @@
 ---
 
-- apt:
+- name: install package
+  apt:
     deb: "{{ rg_deb_url }}"
   become: yes
 

@@ -1,6 +1,7 @@
 ---
 
-- file:
+- name: symlink ~/.bash_dotfiles
+  file:
     src: "{{ role_path }}/files/bashrc"
     dest: ~/.bash_dotfiles
     state: link

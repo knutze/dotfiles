@@ -1,26 +1,32 @@
 ---
 
-- git:
+- name: git clone
+  git:
     repo: "https://github.com/universal-ctags/ctags.git"
     dest: "~/.ctags"
 
-- name: "pwd"
+- name: get pwd
   command: "pwd"
   args:
     chdir: "~/.ctags"
   register: ctags_pwd
   changed_when: False
 
-- name: "./autogen.sh && ./configure"
-  shell: |
-    ./autogen.sh && ./configure
+- name: "./autogen.sh"
+  command: "./autogen.sh"
+  args:
+    chdir: "{{ ctags_pwd.stdout }}"
+
+- name: "./configure"
+  command: "./configure"
   args:
     chdir: "{{ ctags_pwd.stdout }}"
 
 - make:
     chdir: "{{ ctags_pwd.stdout }}"
 
-- make:
+- name: make install
+  make:
     chdir: "{{ ctags_pwd.stdout }}"
     target: install
   become: yes

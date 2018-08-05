@@ -5,7 +5,8 @@
     state: present
   become: yes
 
-- command: "yum-config-manager --add-repo {{ rg_repo_url }}"
+- name: add repository
+  command: "yum-config-manager --add-repo {{ rg_repo_url }}"
   args:
     chdir: "/etc/yum.repos.d"
     creates: "{{ rg_repo_file }}"

@@ -1,11 +1,13 @@
 ---
 
-- package:
+- name: install package
+  package:
     name: vim
     state: present
   become: yes
 
-- file:
+- name: symlink ~/.vimrc
+  file:
     src: "{{ role_path }}/files/vimrc"
     dest: ~/.vimrc
     state: link

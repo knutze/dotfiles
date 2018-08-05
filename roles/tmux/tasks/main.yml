@@ -1,17 +1,20 @@
 ---
 
-- package:
+- name: install package
+  package:
     name: tmux
     state: present
   become: yes
 
-- git:
+- name: install plugins
+  git:
     repo: "https://github.com/{{ item.owner }}/{{ item.name }}"
     dest: "~/.tmux/plugins/{{ item.name }}"
     version: "{{ item.version|default(omit) }}"
   with_items: "{{ tmux_plugins }}"
 
-- file:
+- name: symlink ~/.tmux.conf
+  file:
     src: "{{ role_path }}/files/tmux.conf"
     dest: ~/.tmux.conf
     state: link
