@@ -109,14 +109,12 @@ set ttyfast
 " Fix backspace indent
 set backspace=indent,eol,start
 
-" Tabs. May be overriten by autocmd rules
-set ts=2 sw=2 sts=2
+" Tabs and text width. May be overriten by autocmd rules
 set expandtab
-
-" Text width
+set sw=2 sts=2 ts=4
 set tw=79
 
-" Map leader to <Space>
+" Map leader
 let mapleader="\<Space>"
 
 " Enable hidden buffers
@@ -396,8 +394,8 @@ if has('macunix')
 endif
 
 " Buffer nav
-noremap <Tab> :bn<CR>
-noremap <S-Tab> :bp<CR>
+noremap <expr> <Tab> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bn<CR>"
+noremap <expr> <S-Tab> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bp<CR>"
 
 " Close buffer
 noremap <leader>c :bp\|bd #<CR>
