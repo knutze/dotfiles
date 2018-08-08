@@ -51,4 +51,3 @@ if [[ -t 1 ]]; then
   palette=$(find ~/.vim/ -name 'gruvbox_256palette.sh')
   [[ -e ${palette} ]] && . "${palette}"
 fi
-

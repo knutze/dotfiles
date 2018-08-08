@@ -18,4 +18,3 @@ fi
 ansible-playbook -i hosts setup.yml -K
 
 vim +PlugInstall +qall
-
