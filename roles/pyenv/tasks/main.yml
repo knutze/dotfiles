@@ -1,0 +1,24 @@
+---
+
+- name: include vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: git clone
+  git:
+    repo: "https://github.com/pyenv/pyenv.git"
+    dest: "~/.pyenv"
+
+- name: install plugins
+  git:
+    repo: "https://github.com/pyenv/{{ item }}.git"
+    dest: "~/.pyenv/plugins/{{ item }}"
+  with_items:
+    - pyenv-virtualenv
+
+- name: install python build requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ python_build_requirements }}"
+  become: yes
+

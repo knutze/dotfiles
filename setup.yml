@@ -3,10 +3,11 @@
 - hosts: localhost
   connection: local
   roles:
-  - bash
-  - git
-  - tmux
-  - vim
-  - ctags
-  - ripgrep
-  - fzf
+    - git
+    - tmux
+    - vim
+    - ctags
+    - ripgrep
+    - fzf
+    - pyenv
+    - bash
