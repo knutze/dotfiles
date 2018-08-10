@@ -393,9 +393,11 @@ if has('macunix')
   vmap <C-c> :w !pbcopy<CR><CR>
 endif
 
-" Buffer nav
-noremap <expr> <Tab> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bn<CR>"
-noremap <expr> <S-Tab> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":bp<CR>"
+"" Buffer nav
+" noremap <leader>z :bp<CR>
+" noremap <leader>q :bp<CR>
+" noremap <leader>x :bn<CR>
+" noremap <leader>w :bn<CR>
 
 " Close buffer
 noremap <leader>c :bp\|bd #<CR>
