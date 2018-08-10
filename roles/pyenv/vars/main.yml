@@ -1,0 +1,5 @@
+---
+
+pyenv_plugins:
+  - pyenv-virtualenv
+

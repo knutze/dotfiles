@@ -69,12 +69,12 @@ fi
 if [[ -d ~/.pyenv ]]; then
   export PYENV_ROOT=~/.pyenv
   export PATH=$(pathadd "${PATH}" "${PYENV_ROOT}/bin")
-  if [[ -n "${PYENV_LOADING}" ]]; then
-    true
-  elif type pyenv > /dev/null 2>&1; then
-    export PYENV_LOADING=true
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    unset PYENV_LOADING
+  if type pyenv > /dev/null 2>&1; then
+    if [[ -z "${PYENV_LOADING}" ]]; then
+      export PYENV_LOADING=1
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+      unset PYENV_LOADING
+    fi
   fi
 fi

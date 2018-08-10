@@ -1,0 +1,7 @@
+---
+
+autotools_packages:
+  - autoconf
+  - automake
+  - pkg-config
+

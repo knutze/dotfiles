@@ -1,6 +1,6 @@
 ---
 
-python_build_requirements:
+pbt_packagespbt_packages:
   - zlib-devel
   - bzip2
   - bzip2-devel

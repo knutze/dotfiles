@@ -1,6 +1,6 @@
 ---
 
-python_build_requirements:
+pbt_packagespbt_packages:
   - build-essential
   - libssl-dev
   - zlib1g-dev
