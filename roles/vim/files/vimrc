@@ -439,6 +439,9 @@ cnoremap <C-n> <Down>
 "" Custom configs
 "*****************************************************************************
 
+" gitgutter
+let g:gitgutter_map_keys = 0
+
 " python
 augroup vimrc-python
   autocmd!
