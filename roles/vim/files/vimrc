@@ -231,7 +231,7 @@ nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 
 " grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
+nnoremap <silent> <Leader>f :Rgrep<CR>
 let Grep_Default_Options = '-IR'
 let Grep_Skip_Files = '*.log *.db'
 let Grep_Skip_Dirs = '.git node_modules'
@@ -242,9 +242,9 @@ let g:vimshell_prompt =  '$ '
 
 " terminal emulation
 if g:vim_bootstrap_editor == 'nvim'
-  nnoremap <silent> <leader>sh :terminal<CR>
+  nnoremap <silent> <Leader>sh :terminal<CR>
 else
-  nnoremap <silent> <leader>sh :VimShellCreate<CR>
+  nnoremap <silent> <Leader>sh :VimShellCreate<CR>
 endif
 
 
@@ -274,7 +274,8 @@ augroup END
 " Remember cursor position
 augroup vimrc-remember-cursor-position
   autocmd!
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
+        \ | exe "normal! g`\"" | endif
 augroup END
 
 " txt
@@ -312,10 +313,10 @@ noremap <Leader>gd :Gvdiff<CR>
 noremap <Leader>gr :Gremove<CR>
 
 " session management
-nnoremap <leader>so :OpenSession<Space>
-nnoremap <leader>ss :SaveSession<Space>
-nnoremap <leader>sd :DeleteSession<CR>
-nnoremap <leader>sc :CloseSession<CR>
+nnoremap <Leader>so :OpenSession<Space>
+nnoremap <Leader>ss :SaveSession<Space>
+nnoremap <Leader>sd :DeleteSession<CR>
+nnoremap <Leader>sc :CloseSession<CR>
 
 " Tabs
 " nnoremap <Tab> gt
@@ -323,7 +324,7 @@ nnoremap <leader>sc :CloseSession<CR>
 " nnoremap <silent> <S-t> :tabnew<CR>
 
 " Set working directory
-nnoremap <leader>. :lcd %:p:h<CR>
+nnoremap <Leader>. :lcd %:p:h<CR>
 
 " Opens an edit command with the path of the currently edited file filled in
 noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -350,13 +351,13 @@ if executable('rg')
 endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <expr> <leader>e (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF -m<CR>"
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <expr> <Leader>e (expand('%') =~ 'NERD_tree' ? "\<C-w>\<C-w>" : '').":FZF -m<CR>"
 
 " snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+let g:UltiSnipsExpandTrigger="<Tab>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 let g:UltiSnipsEditSplit="vertical"
 
 " syntastic
@@ -384,7 +385,7 @@ if has('unnamedplus')
 endif
 
 noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
+noremap <Leader>p "+gP<CR>
 noremap XX "+x<CR>
 
 if has('macunix')
@@ -394,14 +395,14 @@ if has('macunix')
 endif
 
 "" Buffer nav
-noremap <leader>h :bp<CR>
-noremap <leader>l :bn<CR>
+noremap <Leader>h :bp<CR>
+noremap <Leader>l :bn<CR>
 
 " Close buffer
-noremap <leader>c :bp\|bd #<CR>
+noremap <Leader>c :bp\|bd #<CR>
 
 " Clean search (highlight)
-nnoremap <silent> <leader><space> :noh<cr>
+nnoremap <silent> <Leader><Space> :noh<CR>
 
 " Switching windows
 noremap <C-j> <C-w>j
@@ -451,11 +452,11 @@ let g:virtualenv_auto_activate = 1
 
 " jedi-vim
 let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<Leader>g"
+let g:jedi#goto_definitions_command = "<Leader>d"
 let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
+let g:jedi#usages_command = "<Leader>n"
+let g:jedi#rename_command = "<Leader>r"
 let g:jedi#show_call_signatures = "0"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#smart_auto_mappings = 0
