@@ -159,12 +159,12 @@ set cursorline
 set list
 set listchars=tab:»-,extends:…,nbsp:␣
 
-let no_buffers_menu=1
-if !exists('g:not_finish_vimplug')
-  colorscheme gruvbox
-  set background=dark
-  let g:gruvbox_contrast_dark = 'hard'
-endif
+" Color scheme
+set background=dark
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_italic = 1
+let g:gruvbox_invert_signs = 1
+colorscheme gruvbox
 
 " Disable the blinking cursor.
 set gcr=a:blinkon0
@@ -319,9 +319,9 @@ nnoremap <Leader>sd :DeleteSession<CR>
 nnoremap <Leader>sc :CloseSession<CR>
 
 " Tabs
-" nnoremap <Tab> gt
-" nnoremap <S-Tab> gT
-" nnoremap <silent> <S-t> :tabnew<CR>
+nnoremap <Tab> gt
+nnoremap <S-Tab> gT
+nnoremap <silent> <S-t> :tabnew<CR>
 
 " Set working directory
 nnoremap <Leader>. :lcd %:p:h<CR>
@@ -512,8 +512,8 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
 
 " Dev Icons
 " https://github.com/ryanoasis/vim-devicons/wiki/Extra-Configuration
