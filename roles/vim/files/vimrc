@@ -152,7 +152,6 @@ let g:session_command_aliases = 1
 syntax on
 set ruler
 set number
-set colorcolumn=+1,99,100
 set cursorline
 
 " List chars
@@ -289,6 +288,15 @@ augroup vimrc-make-cmake
   autocmd!
   autocmd FileType make setlocal noexpandtab
   autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
+augroup END
+
+" python
+augroup vimrc-python
+  autocmd!
+  autocmd FileType python setlocal expandtab ts=4 sw=4 sts=4 tw=79
+      \ colorcolumn=+1,99,100
+      \ formatoptions+=croq
+      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
 set autoread
@@ -441,14 +449,6 @@ cnoremap <C-n> <Down>
 
 " gitgutter
 let g:gitgutter_map_keys = 0
-
-" python
-augroup vimrc-python
-  autocmd!
-  autocmd FileType python setlocal expandtab ts=4 sw=4 sts=4 tw=79
-      \ formatoptions+=croq
-      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-augroup END
 
 " virtualenv
 let g:virtualenv_auto_activate = 1
