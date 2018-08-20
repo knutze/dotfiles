@@ -11,4 +11,5 @@
     src: "{{ role_path }}/files/vimrc"
     dest: ~/.vimrc
     state: link
+    force: yes
 

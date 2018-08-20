@@ -2,9 +2,10 @@
 
 - name: symlink ~/.bash_dotfiles
   file:
-    src: "{{ role_path }}/files/bashrc"
+    src: "{{ role_path }}/files/bash_dotfiles"
     dest: ~/.bash_dotfiles
     state: link
+    force: yes
 
 - blockinfile:
     path: ~/.bashrc

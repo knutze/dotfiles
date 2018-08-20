@@ -19,4 +19,4 @@
 
   vim +PlugInstall +qall
 
-) && exec $SHELL
+) && source ~/.bashrc

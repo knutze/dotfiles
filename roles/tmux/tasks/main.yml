@@ -18,4 +18,5 @@
     src: "{{ role_path }}/files/tmux.conf"
     dest: ~/.tmux.conf
     state: link
+    force: yes
 
