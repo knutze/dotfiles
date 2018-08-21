@@ -12,4 +12,3 @@
     dest: ~/.vimrc
     state: link
     force: yes
-

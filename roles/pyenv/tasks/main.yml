@@ -10,4 +10,3 @@
     repo: "https://github.com/pyenv/{{ item }}.git"
     dest: "~/.pyenv/plugins/{{ item }}"
   with_items: "{{ pyenv_plugins }}"
-

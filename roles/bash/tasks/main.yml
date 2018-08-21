@@ -14,4 +14,3 @@
         . ~/.bash_dotfiles
       fi
     marker: '# {mark} ANSIBLE MANAGED BLOCK [dotfiles]'
-

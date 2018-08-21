@@ -9,4 +9,3 @@ git_configs:
   - { name: 'fetch.prune', value: 'true' }
   - { name: 'push.default', value: 'current' }
   - { name: 'merge.ff', value: 'false' }
-

@@ -14,4 +14,3 @@ tmux_plugins:
   - { owner: 'tmux-plugins', name: 'tmux-resurrect' }
   - { owner: 'tmux-plugins', name: 'tmux-prefix-highlight' }
   - { owner: 'tmux-plugins', name: 'tmux-pain-control' }
-

@@ -11,4 +11,3 @@ python_build_tools_packages:
   - xz
   - xz-devel
   - libffi-devel
-

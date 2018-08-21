@@ -20,7 +20,7 @@
   command: pwd
   args:
     chdir: "{{ tmux_build_dir }}"
-  register: tmux_build_dir_pwd
+  register: _pwd
   changed_when: False
 
 - block:
@@ -41,7 +41,7 @@
         target: install
       become: yes
   vars:
-    _build_dir: "{{ tmux_build_dir_pwd.stdout }}"
+    _build_dir: "{{ _pwd.stdout }}"
 
 - name: install plugins
   git:

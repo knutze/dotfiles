@@ -14,4 +14,3 @@ rg_deb_url: "{{ rg_deb_base_url }}/{{ rg_version }}/{{ rg_deb_file }}"
 rg_repo_base_url: "https://copr.fedorainfracloud.org/coprs/carlwgeorge/ripgrep/repo/epel-7"
 rg_repo_file: "carlwgeorge-ripgrep-epel-7.repo"
 rg_repo_url: "{{ rg_repo_base_url }}/{{ rg_repo_file }}"
-

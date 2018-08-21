@@ -5,4 +5,3 @@
     value: "{{ item.value }}"
     scope: "{{ item.scope|default('global') }}"
   with_items: "{{ git_configs }}"
-

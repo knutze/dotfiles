@@ -3,31 +3,31 @@
 - name: git clone
   git:
     repo: "https://github.com/universal-ctags/ctags.git"
-    dest: "~/.ctags"
+    dest: "{{ ctags_build_dir }}"
 
-- name: get pwd
-  command: "pwd"
+- name: get expanded path
+  command: pwd
   args:
-    chdir: "~/.ctags"
-  register: ctags_pwd
+    chdir: "{{ ctags_build_dir }}"
+  register: _pwd
   changed_when: False
 
-- name: "./autogen.sh"
-  command: "./autogen.sh"
-  args:
-    chdir: "{{ ctags_pwd.stdout }}"
-
-- name: "./configure"
-  command: "./configure"
-  args:
-    chdir: "{{ ctags_pwd.stdout }}"
-
-- make:
-    chdir: "{{ ctags_pwd.stdout }}"
-
-- name: make install
-  make:
-    chdir: "{{ ctags_pwd.stdout }}"
-    target: install
-  become: yes
-
+- block:
+    - name: sh autogen.sh
+      command: sh autogen.sh
+      args:
+        chdir: "{{ _build_dir }}"
+    - name: ./configure
+      command: ./configure
+      args:
+        chdir: "{{ _build_dir }}"
+    - name: make
+      make:
+        chdir: "{{ _build_dir }}"
+    - name: make install
+      make:
+        chdir: "{{ _build_dir }}"
+        target: install
+      become: yes
+  vars:
+    _build_dir: "{{ _pwd.stdout }}"

@@ -11,4 +11,3 @@ My dotfiles for python development.
 ### Terminal Client
 
 Install one of [Nerd Fonts](https://nerdfonts.com/).
-
