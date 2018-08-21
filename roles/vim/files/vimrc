@@ -164,8 +164,6 @@ let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_italic = 1
 let g:gruvbox_invert_signs = 1
 colorscheme gruvbox
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
 
 " Disable the blinking cursor.
 set gcr=a:blinkon0
