@@ -1,9 +1,11 @@
 ---
 
 rg_version: >-
-  {{ lookup('url', 'https://api.github.com/repos/BurntSushi/ripgrep/releases')
-     |from_json|map(attribute='tag_name')
-     |select('match', '^[0-9\.]+$')|first }}
+  {{ (lookup('url', 'https://api.github.com/repos/BurntSushi/ripgrep/releases')
+      |from_json
+      |rejectattr('draft')|rejectattr('prerelease')
+      |selectattr('target_commitish', 'equalto', 'master')
+      |first)['tag_name'] }}
 
 rg_deb_base_url: "https://github.com/BurntSushi/ripgrep/releases/download"
 rg_deb_file: "ripgrep_{{ rg_version }}_amd64.deb"
