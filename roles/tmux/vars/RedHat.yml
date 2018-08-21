@@ -1,0 +1,6 @@
+---
+
+tmux_build_requirements:
+  - build-essential
+  - libevent-devel
+  - ncurses-devel

@@ -1,10 +1,47 @@
 ---
 
-- name: install package
+- name: include vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install build requirements
   package:
-    name: tmux
+    name: "{{ item }}"
     state: present
+  with_items: "{{ tmux_build_requirements }}"
   become: yes
+
+- name: git clone
+  git:
+    repo: https://github.com/tmux/tmux.git
+    dest: "{{ tmux_build_dir }}"
+    version: "{{ tmux_version }}"
+
+- name: get expanded path
+  command: pwd
+  args:
+    chdir: "{{ tmux_build_dir }}"
+  register: tmux_build_dir_pwd
+  changed_when: False
+
+- block:
+    - name: sh autogen.sh
+      command: sh autogen.sh
+      args:
+        chdir: "{{ _build_dir }}"
+    - name: ./configure
+      command: ./configure
+      args:
+        chdir: "{{ _build_dir }}"
+    - name: make
+      make:
+        chdir: "{{ _build_dir }}"
+    - name: make install
+      make:
+        chdir: "{{ _build_dir }}"
+        target: install
+      become: yes
+  vars:
+    _build_dir: "{{ tmux_build_dir_pwd.stdout }}"
 
 - name: install plugins
   git:
@@ -20,3 +57,13 @@
     state: link
     force: yes
 
+- name: mkdir ~/.terminfo
+  file:
+    path: ~/.terminfo
+    state: directory
+
+- name: tic
+  command: tic -o ~/.terminfo {{ role_path }}/files/{{ item }}
+  with_items:
+    - tmux.terminfo
+    - tmux-256color.terminfo

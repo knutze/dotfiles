@@ -1,5 +1,11 @@
 ---
 
+tmux_version: >-
+  {{ (lookup('url', 'https://api.github.com/repos/tmux/tmux/releases/latest')
+      |from_json)['tag_name'] }}
+
+tmux_build_dir: "~/.tmux.src"
+
 tmux_plugins:
   - { owner: 'tmux-plugins', name: 'tpm' }
   - { owner: 'tmux-plugins', name: 'tmux-sensible' }
