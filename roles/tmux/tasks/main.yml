@@ -16,7 +16,7 @@
     dest: "{{ tmux_build_dir }}"
     version: "{{ tmux_version }}"
 
-- name: get expanded path
+- name: pwd
   command: pwd
   args:
     chdir: "{{ tmux_build_dir }}"

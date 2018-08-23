@@ -5,7 +5,7 @@
     repo: "https://github.com/universal-ctags/ctags.git"
     dest: "{{ ctags_build_dir }}"
 
-- name: get expanded path
+- name: pwd
   command: pwd
   args:
     chdir: "{{ ctags_build_dir }}"
