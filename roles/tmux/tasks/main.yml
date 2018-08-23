@@ -57,13 +57,8 @@
     state: link
     force: yes
 
-- name: mkdir ~/.terminfo
-  file:
-    path: ~/.terminfo
-    state: directory
-
 - name: tic
-  command: tic -o ~/.terminfo {{ role_path }}/files/{{ item }}
+  command: tic -x {{ role_path }}/files/{{ item }}
   with_items:
+    - xterm.terminfo
     - tmux.terminfo
-    - tmux-256color.terminfo
