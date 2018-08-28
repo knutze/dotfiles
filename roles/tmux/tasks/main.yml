@@ -59,6 +59,7 @@
 
 - name: tic
   command: tic -x {{ role_path }}/files/{{ item }}
+  become: yes
   with_items:
     - xterm.terminfo
     - tmux.terminfo
