@@ -1,14 +1,11 @@
 ## functions
 
-strstr() {
-  [[ "${1#*$2*}" != "$1" ]]
-}
-
 pathadd() {
   if [[ "$1" =~ (^|:)$2($|:) ]]; then
     echo "$1"
+  else
+    echo "$2:$1"
   fi
-  echo "$2:$1"
 }
 
 ## tty settings
@@ -109,3 +106,5 @@ _fzf_complete_git_post() {
 }
 
 complete -F _fzf_complete_git -o default -o bashdefault git
+
+# vim: set ft=sh:
