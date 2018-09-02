@@ -79,3 +79,33 @@ if [[ -d ~/.pyenv ]]; then
     fi
   fi
 fi
+
+## fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_COMPLETION_TRIGGER='?'
+
+_fzf_complete_git() {
+  local cmd="${COMP_WORDS[@]}"
+  local prev=${COMP_WORDS[COMP_CWORD-1]}
+  if [[ $cmd == 'git add'* ]]; then
+    _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
+      git -c color.status=always status -s | sed -r '/  /d'
+    )
+  elif [[ $cmd == 'git reset HEAD'* ]]; then
+    _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
+      git -c color.status=always status -s | sed -rn '/  /p'
+    )
+  fi
+}
+
+_fzf_complete_git_post() {
+  local cmd="${COMP_WORDS[@]}"
+  if [[ $cmd == 'git add'* ]]; then
+    sed -r 's/.* (.*)$/\1/'
+  elif [[ $cmd == 'git reset HEAD'* ]]; then
+    sed -r 's/.* (.*)$/\1/'
+  fi
+}
+
+complete -F _fzf_complete_git -o default -o bashdefault git
