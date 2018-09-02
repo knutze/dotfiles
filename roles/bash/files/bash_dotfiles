@@ -1,11 +1,15 @@
 ## functions
-
-pathadd() {
-  if [[ "$1" =~ (^|:)$2($|:) ]]; then
-    echo "$1"
-  else
-    echo "$2:$1"
-  fi
+pathcat() {
+  local path=
+  local IFS=':'
+  for p in "${1%:}:${2}"; do
+    if [[ -z "${path}" ]]; then
+      path=$p
+    elif [[ ! "${path}" =~ (^|:)${p}($|:) ]]; then
+      path="${path}:${p}"
+    fi;
+  done
+  echo "${path}"
 }
 
 ## tty settings
@@ -66,7 +70,7 @@ fi
 ## pyenv
 if [[ -d ~/.pyenv ]]; then
   export PYENV_ROOT=~/.pyenv
-  export PATH=$(pathadd "${PATH}" "${PYENV_ROOT}/bin")
+  export PATH=$(pathcat "${PYENV_ROOT}/bin" "${PATH}")
   if type pyenv > /dev/null 2>&1; then
     if [[ -z "${PYENV_LOADING}" ]]; then
       export PYENV_LOADING=1
@@ -85,11 +89,11 @@ export FZF_COMPLETION_TRIGGER='?'
 _fzf_complete_git() {
   local cmd="${COMP_WORDS[@]}"
   local prev=${COMP_WORDS[COMP_CWORD-1]}
-  if [[ $cmd == 'git add'* ]]; then
+  if [[ $cmd == 'git add '* ]]; then
     _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
       git -c color.status=always status -s | sed -r '/  /d'
     )
-  elif [[ $cmd == 'git reset HEAD'* ]]; then
+  elif [[ $cmd == 'git reset HEAD '* ]]; then
     _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
       git -c color.status=always status -s | sed -rn '/  /p'
     )
@@ -98,10 +102,10 @@ _fzf_complete_git() {
 
 _fzf_complete_git_post() {
   local cmd="${COMP_WORDS[@]}"
-  if [[ $cmd == 'git add'* ]]; then
-    sed -r 's/.* (.*)$/\1/'
-  elif [[ $cmd == 'git reset HEAD'* ]]; then
-    sed -r 's/.* (.*)$/\1/'
+  if [[ $cmd == 'git add '* ]]; then
+    sed -r 's/^ ?[^ ]+ ? //'
+  elif [[ $cmd == 'git reset HEAD '* ]]; then
+    sed -r 's/^ ?[^ ]+ ? //'
   fi
 }
 
