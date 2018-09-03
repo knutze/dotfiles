@@ -1,15 +1,14 @@
 ## functions
 pathcat() {
-  local path=
-  local IFS=':'
-  for p in "${1%:}:${2}"; do
-    if [[ -z "${path}" ]]; then
-      path=$p
-    elif [[ ! "${path}" =~ (^|:)${p}($|:) ]]; then
-      path="${path}:${p}"
-    fi;
+  IFS=":" read -r -d '' -a paths1 <<< "$1"
+  IFS=":" read -r -d '' -a paths2 <<< "$2"
+  local path="$(echo -n ${paths1[0]})"
+  for p in "${paths1[@]:1}" "${paths2[@]}"; do
+    if [[ ! $path =~ (^|:)$p($|:) ]]; then
+      path+="$(echo -n :$p)"
+    fi
   done
-  echo "${path}"
+  echo "$path"
 }
 
 ## tty settings
