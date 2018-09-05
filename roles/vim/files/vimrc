@@ -320,12 +320,6 @@ noremap <Leader>gb :Gblame<CR>
 noremap <Leader>gd :Gvdiff<CR>
 noremap <Leader>gr :Gremove<CR>
 
-" session management
-nnoremap <Leader>so :OpenSession<Space>
-nnoremap <Leader>ss :SaveSession<Space>
-nnoremap <Leader>sd :DeleteSession<CR>
-nnoremap <Leader>sc :CloseSession<CR>
-
 " Set working directory
 nnoremap <Leader>. :lcd %:p:h<CR>
 
@@ -367,12 +361,12 @@ let g:UltiSnipsEditSplit="vertical"
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_aggregate_errors = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_error_symbol='✕'
-let g:syntastic_warning_symbol=''
-let g:syntastic_style_error_symbol = '✕'
-let g:syntastic_style_warning_symbol = ''
+let g:syntastic_error_symbol='✘'
+let g:syntastic_warning_symbol='✔'
+let g:syntastic_style_error_symbol = '✘'
+let g:syntastic_style_warning_symbol = '✔'
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -439,14 +433,24 @@ cnoremap <C-n> <Down>
 
 " gitgutter
 let g:gitgutter_map_keys = 0
+let g:gitgutter_sign_added = '>'
+let g:gitgutter_sign_modified = '+'
+let g:gitgutter_sign_removed = '<'
+let g:gitgutter_sign_modified_removed = '-'
+
+if exists('&signcolumn')  " Vim 7.4.2201
+  set signcolumn=yes
+else
+  let g:gitgutter_sign_column_always = 1
+endif
 
 " virtualenv
 let g:virtualenv_auto_activate = 1
 
 " jedi-vim
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
+let g:jedi#goto_command = "<Leader>d"
 let g:jedi#goto_assignments_command = "<Leader>g"
-let g:jedi#goto_definitions_command = "<Leader>d"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<Leader>n"
 let g:jedi#rename_command = "<Leader>r"
