@@ -37,6 +37,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'avelino/vim-bootstrap-updater'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'ConradIrwin/vim-bracketed-paste'
+Plug 'ervandew/supertab'
 Plug 'honza/vim-snippets'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'majutsushi/tagbar'
@@ -410,10 +411,10 @@ noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
 
 " Window resize
-map <Up> <C-W>+
-map <Down> <C-W>-
-map <Left> <C-W><
-map <Right> <C-W>>
+map <Up> <C-w>+
+map <Down> <C-w>-
+map <Left> <C-w><
+map <Right> <C-w>>
 
 " Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
@@ -430,6 +431,9 @@ cnoremap <C-n> <Down>
 "*****************************************************************************
 "" Custom configs
 "*****************************************************************************
+
+" supertab
+let g:SuperTabDefaultCompletionType = "<C-n>"
 
 " gitgutter
 let g:gitgutter_map_keys = 0
