@@ -22,7 +22,7 @@ if !filereadable(vimplug_exists)
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   let g:not_finish_vimplug = "yes"
 
-  autocmd VimEnter * PlugInstall
+  autocmd VimEnter * PlugInstall --sync
 endif
 
 
@@ -45,6 +45,7 @@ Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
+Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -146,6 +147,7 @@ syntax on
 set ruler
 set number
 set cursorline
+set diffopt+=vertical
 
 " List chars
 set list
@@ -191,6 +193,9 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let airline#extensions#tabline#ignore_bufadd_pat =
+      \ '\c\vgundo|undotree|vimfiler|tagbar|nerd_tree'
 
 
 "*****************************************************************************
@@ -321,6 +326,11 @@ noremap <Leader>gb :Gblame<CR>
 noremap <Leader>gd :Gvdiff<CR>
 noremap <Leader>gr :Gremove<CR>
 
+"" Tabs
+nnoremap <Tab> gt
+nnoremap <S-Tab> gT
+nnoremap <silent> <S-t> :tabnew<CR>
+
 " Set working directory
 nnoremap <Leader>. :lcd %:p:h<CR>
 
@@ -438,8 +448,8 @@ let g:SuperTabDefaultCompletionType = "<C-n>"
 " gitgutter
 let g:gitgutter_map_keys = 0
 let g:gitgutter_sign_added = '>'
-let g:gitgutter_sign_modified = '+'
 let g:gitgutter_sign_removed = '<'
+let g:gitgutter_sign_modified = '+'
 let g:gitgutter_sign_modified_removed = '-'
 
 if exists('&signcolumn')  " Vim 7.4.2201
@@ -512,6 +522,8 @@ let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
 
 " Dev Icons
 " https://github.com/ryanoasis/vim-devicons/wiki/Extra-Configuration
