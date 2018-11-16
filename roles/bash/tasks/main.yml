@@ -8,7 +8,7 @@
     force: yes
 
 - blockinfile:
-    path: ~/.bashrc
+    name: ~/.bashrc
     block: |
       if [[ -f ~/.bash_dotfiles ]]; then
         . ~/.bash_dotfiles

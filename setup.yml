@@ -2,12 +2,13 @@
 
 - hosts: localhost
   connection: local
+  any_errors_fatal: yes
   roles:
     - git
     - tmux
-    - vim
     - ctags
     - ripgrep
     - fzf
+    - vim
     - pyenv
     - bash
