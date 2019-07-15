@@ -1,5 +1,10 @@
 ---
 
+- name: download binary
+  get_url:
+    url: "{{ rg_deb_url }}"
+    dest: /tmp/ripgrep.deb
+
 - name: install package
   apt:
     deb: /tmp/ripgrep.deb
