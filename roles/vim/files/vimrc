@@ -79,9 +79,8 @@ if v:version >= 704
 endif
 
 " Python
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim' | Plug 'lambdalisue/vim-pyenv'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-Plug 'jmcantrell/vim-virtualenv'
 
 " Include user's extra bundle
 if filereadable(expand("~/.vimrc.local.bundles"))
