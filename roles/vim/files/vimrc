@@ -137,6 +137,9 @@ else
   set shell=/bin/sh
 endif
 
+" Disable vim automatic visual mode using mouse
+set mouse-=a
+
 
 "*****************************************************************************
 "" Visual Settings
@@ -393,14 +396,11 @@ if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
 
-noremap YY "+y<CR>
-noremap <Leader>p "+gP<CR>
-noremap XX "+x<CR>
-
-if has('macunix')
-  " pbcopy for OSX copy/paste
-  vmap <C-x> :!pbcopy<CR>
-  vmap <C-c> :w !pbcopy<CR><CR>
+if executable('xsel')
+  nmap <leader>y :w !xsel -i -b<CR><CR>
+  vmap <leader>y :w !xsel -i -b<CR><CR>
+  nmap <leader>p :r!xsel -b<CR>
+  vmap <leader>p :r!xsel -b<CR>
 endif
 
 "" Buffer nav
@@ -461,14 +461,14 @@ endif
 let g:virtualenv_auto_activate = 1
 
 " jedi-vim
-let g:jedi#popup_on_dot = 1
+let g:jedi#popup_on_dot = 0
 let g:jedi#goto_command = "<Leader>d"
 let g:jedi#goto_assignments_command = "<Leader>g"
 let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<Leader>n"
 let g:jedi#rename_command = "<Leader>r"
 let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
+let g:jedi#completions_command = "<Tab>"
 let g:jedi#smart_auto_mappings = 0
 
 " syntastic

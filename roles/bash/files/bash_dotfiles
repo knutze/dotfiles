@@ -58,7 +58,7 @@ C_BG_WHITE="\[\033[47m\]"
 ## environement variables
 export TZ="JST-9"
 export PS1="${C_YELLOW}>[ES=\$?, \$(date +'%F %T %Z')]${C_DEFAULT}
-${C_GREEN}[\u@\h \W]${C_DEFAULT}\$ "
+${C_BLUE}[\u@\h \W]${C_DEFAULT}\$ "
 
 ## color palette
 if [[ -t 1 ]]; then

@@ -7,7 +7,7 @@
     - git
     - tmux
     - ctags
-    - ripgrep
+    #- ripgrep
     - fzf
     - vim
     - pyenv
