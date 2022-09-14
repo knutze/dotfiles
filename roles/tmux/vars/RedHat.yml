@@ -1,8 +1,0 @@
----
-
-tmux_build_requirements:
-  - "@Development Tools"
-  - kernel-devel
-  - kernel-headers
-  - libevent-devel
-  - ncurses-devel

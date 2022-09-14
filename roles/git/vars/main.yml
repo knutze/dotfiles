@@ -2,7 +2,7 @@
 
 git_configs:
   - { name: 'core.pager', value: 'less -r' }
-  - { name: 'core.editor', value: 'vi -u NONE -N' }
+  - { name: 'core.editor', value: 'vim -u NONE -N' }
   - { name: 'core.excludesfile',
       value: '{{ ansible_env.HOME }}/.gitignore' }
   - { name: 'color.ui', value: 'auto' }

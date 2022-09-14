@@ -1,65 +1,28 @@
 ---
 
-- name: include vars
-  include_vars: "{{ ansible_os_family }}.yml"
-
-- name: install build requirements
-  package:
-    name: "{{ item }}"
+- name: install package
+  ansible.builtin.package:
+    name: tmux
     state: present
-  with_items: "{{ tmux_build_requirements }}"
-  become: yes
-
-- name: git clone
-  git:
-    repo: https://github.com/tmux/tmux.git
-    dest: "{{ tmux_build_dir }}"
-    version: "{{ tmux_version }}"
-
-- name: pwd
-  command: pwd
-  args:
-    chdir: "{{ tmux_build_dir }}"
-  register: _pwd
-  changed_when: False
-
-- block:
-    - name: sh autogen.sh
-      command: sh autogen.sh
-      args:
-        chdir: "{{ _build_dir }}"
-    - name: ./configure
-      command: ./configure
-      args:
-        chdir: "{{ _build_dir }}"
-    - name: make
-      make:
-        chdir: "{{ _build_dir }}"
-    - name: make install
-      make:
-        chdir: "{{ _build_dir }}"
-        target: install
-      become: yes
-  vars:
-    _build_dir: "{{ _pwd.stdout }}"
 
 - name: install plugins
-  git:
+  ansible.builtin.git:
     repo: "https://github.com/{{ item.owner }}/{{ item.name }}"
     dest: "~/.tmux/plugins/{{ item.name }}"
-    version: "{{ item.version|default(omit) }}"
+    version: "{{ item.version | default(omit) }}"
   with_items: "{{ tmux_plugins }}"
 
 - name: symlink ~/.tmux.conf
-  file:
+  ansible.builtin.file:
     src: "{{ role_path }}/files/tmux.conf"
     dest: ~/.tmux.conf
     state: link
     force: yes
 
-- name: tic
-  command: tic -x {{ role_path }}/files/{{ item }}
-  become: yes
-  with_items:
-    - xterm.terminfo
-    - tmux.terminfo
+# - name: tic
+#   ansible.builtin.command:
+#     cmd: tic -x {{ role_path }}/files/{{ item }}
+#   with_items:
+#     - xterm.terminfo
+#     - tmux.terminfo
+#   become: yes

@@ -1,0 +1,20 @@
+---
+
+- name: symlink ~/.minttyrc
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/minttyrc"
+    dest: ~/.minttyrc
+    state: link
+    force: yes
+
+- name: directory ~/.config/mintty/emojis
+  ansible.builtin.file:
+    path: ~/.config/mintty/emojis
+    state: directory
+    mode: u=rwx,g=rx,o=rx
+
+- name: getemojis
+  ansible.builtin.command:
+    cmd: /usr/share/mintty/emojis/getemojis -d windows
+  args:
+    chdir: ~/.config/mintty/emojis

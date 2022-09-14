@@ -1,14 +1,17 @@
 ---
 
 - name: install package
-  package:
+  ansible.builtin.package:
     name: vim
     state: present
-  become: yes
 
 - name: symlink ~/.vimrc
-  file:
+  ansible.builtin.file:
     src: "{{ role_path }}/files/vimrc"
     dest: ~/.vimrc
     state: link
     force: yes
+
+- name: install plugins
+  ansible.builtin.shell:
+    cmd: vim +'PlugInstall --sync' +qall &>/dev/null </dev/tty

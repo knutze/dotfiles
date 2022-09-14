@@ -1,4 +1,4 @@
 ---
 
-pyenv_plugins:
-  - pyenv-virtualenv
+pyenv_plugins: []
+  # - pyenv-virtualenv

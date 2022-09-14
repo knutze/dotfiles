@@ -1,0 +1,71 @@
+## fzf
+
+type fzf &>/dev/null || return
+[[ $- =~ i ]] || return
+
+# Key bindings
+source_first_found \
+  ~/.fzf/shell/key-bindings.bash \
+  "${MINGW_PREFIX}"/share/fzf/key-bindings.bash
+
+# Completion
+source_first_found \
+  ~/.fzf/shell/completion.bash \
+  "${MINGW_PREFIX}"/share/fzf/completion.bash
+
+export FZF_DEFAULT_COMMAND='git ls-files || find * -type f'
+export FZF_DEFAULT_OPTS='--ansi --height 50% --reverse --border'
+export FZF_COMPLETION_TRIGGER='?'
+export FZF_COMPLETION_OPTS='--info=inline'
+
+if type fd &>/dev/null; then
+export FZF_DEFAULT_COMMAND='fd --color always --follow --exclude ".git" .'
+_fzf_compgen_path() {
+  fd --color always --follow --exclude ".git" . "$1"
+}
+_fzf_compgen_dir() {
+  fd --color always --type d --follow --exclude ".git" . "$1"
+}
+fi
+
+_fzf_proc_completion() {
+  pstree |
+  _fzf_complete -m --header-lines=1 \
+    --preview 'echo {}' \
+    --preview-window down:3:wrap --min-height 15 \
+    -- "$@"
+}
+
+_fzf_comprun() {
+  local cmd=$1
+  shift
+  case "$cmd" in
+    cd)           fzf "$@" --preview 'tree -L 3 {} | head -100' ;;
+    export|unset) fzf "$@" --preview "eval 'echo \$'{}" ;;
+    # ssh)          fzf "$@" --preview 'dig {}' ;;
+    *)            fzf "$@" ;;
+  esac
+}
+
+# _fzf_complete_git() {
+#   local cmd="${COMP_WORDS[@]}"
+#   # local prev=${COMP_WORDS[COMP_CWORD-1]}
+#   if [[ $cmd =~ ^git[[:blank:]]+add[[:blank:]]+.* ]]; then
+#     git -c color.status=always status -s | sed -E '/  /d' | \
+#       _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@"
+#   elif [[ $cmd =~ ^git[[:blank:]]+restore[[:blank:]]+.* ]]; then
+#     git -c color.status=always status -s | sed -En '/  /p' | \
+#       _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@"
+#   fi
+# }
+
+# _fzf_complete_git_post() {
+#   local cmd="${COMP_WORDS[@]}"
+#   if [[ $cmd =~ ^git[[:blank:]]+add[[:blank:]]+.* ]]; then
+#     sed -E 's/^ ?[^ ]+ ? //'
+#   elif [[ $cmd =~ ^git[[:blank:]]+restore[[:blank:]]+.* ]]; then
+#     sed -E 's/^ ?[^ ]+ ? //'
+#   fi
+# }
+
+# complete -F _fzf_complete_git -o default -o bashdefault git

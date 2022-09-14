@@ -1,113 +1,175 @@
-## functions
-pathcat() {
-  IFS=":" read -r -d '' -a paths1 <<< "$1"
-  IFS=":" read -r -d '' -a paths2 <<< "$2"
-  local path="$(echo -n ${paths1[0]})"
-  for p in "${paths1[@]:1}" "${paths2[@]}"; do
-    if [[ ! $path =~ (^|:)$p($|:) ]]; then
-      path+="$(echo -n :$p)"
-    fi
-  done
-  echo "$path"
-}
-
 ## tty settings
 stty stop undef
 
 ## umask
 umask 0022
 
+## timezone
+export TZ='JST-9'
+
+## history
+export HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE=$'[ \t]*:&:!(?????*)'
+export HISTSIZE=5000
+export HISTFILESIZE=5000
+shopt -s cmdhist
+shopt -s histappend
+
 ## aliases
 alias ls='ls -p --color=auto --group-directories-first'
 alias la='ls -pA --color=auto --group-directories-first'
 alias ll='ls -plh --color=auto --group-directories-first --time-style=long-iso'
 alias lla='ls -plhA --color=auto --group-directories-first --time-style=long-iso'
+alias less='less -R'
 alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias rgrep='rgrep --color=auto'
-alias ssh='TERM=xterm-256color ssh'
+alias ssh='TERM=${TERM/tmux/xterm} ssh'
 
-## color definition
-C_DEFAULT="\[\033[m\]"
-C_BLACK="\[\033[30m\]"
-C_RED="\[\033[31m\]"
-C_GREEN="\[\033[32m\]"
-C_YELLOW="\[\033[33m\]"
-C_BLUE="\[\033[34m\]"
-C_MAGENTA="\[\033[35m\]"
-C_CYAN="\[\033[36m\]"
-C_WHITE="\[\033[37m\]"
-C_BRBLACK="\[\033[1;30m\]"
-C_BRRED="\[\033[1;31m\]"
-C_BRGREEN="\[\033[1;32m\]"
-C_BRYELLOW="\[\033[1;33m\]"
-C_BRBLUE="\[\033[1;34m\]"
-C_BRMAGENTA="\[\033[1;35m\]"
-C_BRCYAN="\[\033[1;36m\]"
-C_BRWHITE="\[\033[1;37m\]"
-C_BG_BLACK="\[\033[40m\]"
-C_BG_RED="\[\033[41m\]"
-C_BG_GREEN="\[\033[42m\]"
-C_BG_YELLOW="\[\033[43m\]"
-C_BG_BLUE="\[\033[44m\]"
-C_BG_MAGENTA="\[\033[45m\]"
-C_BG_CYAN="\[\033[46m\]"
-C_BG_WHITE="\[\033[47m\]"
+## utility functions
+pathcat() {
+  local path p
+  IFS=":" read -r -d '' -a paths1 <<< "$1"
+  IFS=":" read -r -d '' -a paths2 <<< "$2"
+  path="$(echo -n ${paths1[0]})"
+  for p in "${paths1[@]:1}" "${paths2[@]}"; do
+    if [[ ! ${path} =~ (^|:)${p}($|:) ]]; then
+      path+="$(echo -n :${p})"
+    fi
+  done
+  echo "${path}"
+}
+export PATH=$(pathcat ~/.local/bin "${PATH}")
 
-## environement variables
-export TZ="JST-9"
-export PS1="${C_YELLOW}>[ES=\$?, \$(date +'%F %T %Z')]${C_DEFAULT}
-${C_BLUE}[\u@\h \W]${C_DEFAULT}\$ "
+source_first_found() {
+  local file
+  for file in "$@"; do
+    [[ -f "$file" ]] && source "$file" && return
+  done
+}
 
 ## color palette
 if [[ -t 1 ]]; then
-  palette=$(find ~/.vim/ -name 'gruvbox_256palette.sh')
-  [[ -e ${palette} ]] && . "${palette}"
+  source_first_found "$(find ~/.vim/ -name 'gruvbox_256palette.sh')"
 fi
 
-## pyenv
-if [[ -d ~/.pyenv ]]; then
-  export PYENV_ROOT=~/.pyenv
-  export PATH=$(pathcat "${PYENV_ROOT}/bin" "${PATH}")
-  if type pyenv > /dev/null 2>&1; then
-    if [[ -z "${PYENV_LOADING}" ]]; then
-      export PYENV_LOADING=1
-      eval "$(pyenv init -)"
-      eval "$(pyenv virtualenv-init -)"
-      unset PYENV_LOADING
+## clipboard
+if [[ -e /dev/clipboard ]]; then
+  cb() {
+    if [[ -t 0 ]]; then
+      cat /dev/clipboard
+    else
+      cat >/dev/clipboard
     fi
-  fi
+  }
 fi
 
-## fzf
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
-export FZF_COMPLETION_TRIGGER='?'
 
-_fzf_complete_git() {
-  local cmd="${COMP_WORDS[@]}"
-  local prev=${COMP_WORDS[COMP_CWORD-1]}
-  if [[ $cmd == 'git add '* ]]; then
-    _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
-      git -c color.status=always status -s | sed -r '/  /d'
-    )
-  elif [[ $cmd == 'git reset HEAD '* ]]; then
-    _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@" < <(
-      git -c color.status=always status -s | sed -rn '/  /p'
-    )
-  fi
+#############################################################################
+## SGR (Select Graphic Rendition)
+
+declare -Ar SGR_FG_COLOR=(
+  ['BLACK']=30
+  ['RED']=31
+  ['GREEN']=32
+  ['YELLOW']=33
+  ['BLUE']=34
+  ['MAGENTA']=35 ['PURPLE']=35
+  ['CYAN']=36 ['AQUA']=36
+  ['WHITE']=37
+  ['DEFAULT']=39
+  ['BLACK+']=90 ['GRAY']=90
+  ['RED+']=91
+  ['GREEN+']=92
+  ['YELLOW+']=93
+  ['BLUE+']=94
+  ['MAGENTA+']=95 ['PURPLE+']=95
+  ['CYAN+']=96 ['AQUA+']=96
+  ['WHITE+']=97
+)
+declare -Ar SGR_BG_COLOR=(
+  ['BLACK']=40
+  ['RED']=41
+  ['GREEN']=42
+  ['YELLOW']=43
+  ['BLUE']=44
+  ['MAGENTA']=45 ['PURPLE']=45
+  ['CYAN']=46 ['AQUA']=46
+  ['WHITE']=47
+  ['DEFAULT']=49
+  ['BLACK+']=100 ['GRAY']=100
+  ['RED+']=101
+  ['GREEN+']=102
+  ['YELLOW+']=103
+  ['BLUE+']=104
+  ['MAGENTA+']=105 ['PURPLE+']=105
+  ['CYAN+']=106 ['AQUA+']=106
+  ['WHITE+']=107
+)
+
+sgr() {
+  local attrs fg_color bg_color seq
+  attrs="${1,,}"
+  fg_color="${2^^}"
+  bg_color="${3^^}"
+  seq="0;"  # RESET always
+  [[ ${attrs} =~ b ]] && seq+='1;'  # BOLD
+  [[ ${attrs} =~ f ]] && seq+='2;'  # FAINT
+  [[ ${attrs} =~ i ]] && seq+='3;'  # ITALIC
+  [[ ${attrs} =~ u ]] && seq+='4;'  # UNDERLINE
+  [[ ${attrs} =~ r ]] && seq+='7;'  # REVERSE (FG<->BG)
+  [[ -n ${fg_color} ]] && seq+="${SGR_FG_COLOR[${fg_color}]};"
+  [[ -n ${bg_color} ]] && seq+="${SGR_BG_COLOR[${bg_color}]};"
+  printf '\e[%sm' "${seq%;}"
 }
 
-_fzf_complete_git_post() {
-  local cmd="${COMP_WORDS[@]}"
-  if [[ $cmd == 'git add '* ]]; then
-    sed -r 's/^ ?[^ ]+ ? //'
-  elif [[ $cmd == 'git reset HEAD '* ]]; then
-    sed -r 's/^ ?[^ ]+ ? //'
+
+#############################################################################
+## prompt
+
+source_first_found /usr/share/git/git-prompt.sh
+
+GIT_PS1_SHOWUPSTREAM=auto
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWSTASHSTATE=true
+GIT_PS1_SHOWCOLORHINTS=
+GIT_PS1_STATESEPARATOR=
+GIT_PS1_DESCRIBE_STYLE=branch
+GIT_PS1_HIDE_IF_PWD_IGNORED=true
+GIT_PS1_COMPRESSSPARSESTATE='?'
+
+PS1_HEAD='|>'
+PS2_HEAD='<|'
+PS1_SEPARATOR=''
+PS1_CMD_SUCCESS='  '
+PS1_CMD_SUCCESS_COLOR=(black green+)
+PS1_CMD_FAIL='  '
+PS1_CMD_FAIL_COLOR=(black yellow+)
+PS1_TIME=' \t '
+PS1_TIME_COLOR=(gray white+)
+PS1_PWD=' \w '
+PS1_PWD_COLOR=(white+ blue)
+PS1_GIT='  %s '
+PS1_GIT_COLOR=(white+ purple)
+
+_prompt_command() {
+  PS1_EXIT_STATUS=$?
+  if [[ ${PS1_EXIT_STATUS} -eq 0 ]]; then
+    PS1_CMD="${PS1_CMD_SUCCESS}"
+    PS1_CMD_COLOR=("${PS1_CMD_SUCCESS_COLOR[@]}")
+  else
+    PS1_CMD="${PS1_CMD_FAIL}"
+    PS1_CMD_COLOR=("${PS1_CMD_FAIL_COLOR[@]}")
   fi
 }
+export PROMPT_COMMAND=_prompt_command
 
-complete -F _fzf_complete_git -o default -o bashdefault git
-
-# vim: set ft=sh:
+PS1='\[$(sgr -- "${PS1_CMD_COLOR[@]}")\]${PS1_CMD}'
+PS1+='\[$(sgr -- "${PS1_CMD_COLOR[1]}" "${PS1_TIME_COLOR[1]}")\]${PS1_SEPARATOR}'
+PS1+='\[$(sgr -- "${PS1_TIME_COLOR[@]}")\]'"${PS1_TIME}"
+PS1+='\[$(sgr -- "${PS1_TIME_COLOR[1]}" "${PS1_PWD_COLOR[1]}")\]${PS1_SEPARATOR}'
+PS1+='\[$(sgr -- "${PS1_PWD_COLOR[@]}")\]'"${PS1_PWD}"
+PS1+='\[$(sgr -- "${PS1_PWD_COLOR[1]}" "${PS1_GIT_COLOR[1]}")\]${PS1_SEPARATOR}'
+PS1+='\[$(sgr -- "${PS1_GIT_COLOR[@]}")\]$(__git_ps1 "${PS1_GIT}")'
+PS1+='\[$(sgr -- "${PS1_GIT_COLOR[1]}")\]${PS1_SEPARATOR}'$'\n'
+PS1+='\[$(sgr -b)\]${PS1_HEAD}\[$(sgr)\] '
+PS2='\[$(sgr -f)\]${PS2_HEAD}\[$(sgr)\] '

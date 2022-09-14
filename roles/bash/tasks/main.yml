@@ -1,16 +1,15 @@
 ---
 
 - name: symlink ~/.bash_dotfiles
-  file:
+  ansible.builtin.file:
     src: "{{ role_path }}/files/bash_dotfiles"
     dest: ~/.bash_dotfiles
     state: link
     force: yes
 
-- blockinfile:
-    name: ~/.bashrc
+- name: append to ~/.bashrc
+  ansible.builtin.blockinfile:
+    path: ~/.bashrc
     block: |
-      if [[ -f ~/.bash_dotfiles ]]; then
-        . ~/.bash_dotfiles
-      fi
+      [[ -f ~/.bash_dotfiles ]] && source ~/.bash_dotfiles
     marker: '# {mark} ANSIBLE MANAGED BLOCK [dotfiles]'

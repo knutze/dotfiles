@@ -1,10 +1,54 @@
 ---
 
-- name: git clone
-  git:
-    repo: https://github.com/junegunn/fzf.git
-    dest: ~/.fzf
-    depth: 1
+- name: include vars
+  ansible.builtin.include_vars:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ os_short_name }}.yml"
+      skip: True
 
-- name: install
-  command: ~/.fzf/install
+# - name: install package
+#   ansible.builtin.package:
+#     name: "{{ fzf_package_name }}"
+#     state: present
+
+- name: install requires
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ fzf_install_requires }}"
+
+- name: git clone
+  ansible.builtin.git:
+    depth: 1
+    repo: "{{ fzf_git_repo }}"
+    dest: ~/.fzf
+    version: "{{ fzf_git_version }}"
+    force: yes
+
+- name: install --bin
+  ansible.builtin.command:
+    cmd: ~/.fzf/install --bin
+
+- name: symlink ~/.bash_fzf
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/bash_fzf"
+    dest: ~/.bash_fzf
+    state: link
+    force: yes
+
+- name: append to ~/.bashrc
+  ansible.builtin.blockinfile:
+    path: ~/.bashrc
+    block: |
+      [[ -f ~/.bash_fzf ]] && source ~/.bash_fzf
+    marker: '# {mark} ANSIBLE MANAGED BLOCK [fzf]'
+
+- name: include tasks
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ os_short_name }}.yml"
+      skip: True

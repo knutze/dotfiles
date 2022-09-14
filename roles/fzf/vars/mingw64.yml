@@ -1,0 +1,7 @@
+---
+
+fzf_package_name: "mingw-w64-x86_64-fzf"
+
+fzf_install_requires:
+- unzip
+- winpty

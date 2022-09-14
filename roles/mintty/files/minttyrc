@@ -1,0 +1,23 @@
+# To use common configuration in %APPDATA%\mintty, simply remove this file
+BoldAsColour=yes
+BoldAsFont=yes
+Charset=UTF-8
+Charwidth=unicode
+Columns=120
+CursorType=block
+Emojis=windows
+EmojiPlacement=align
+# https://github.com/ryanoasis/nerd-fonts/releases
+Font=FiraCode NF
+# https://github.com/yuru7/HackGen/releases
+Font1=HackGen
+FontChoice=CJK:1
+FontHeight=16
+FontSmoothing=full
+Locale=C
+LigaturesSupport=2
+Ligatures=2
+Rows=48
+Term=xterm-256color
+ThemeFile=gruvbox
+Transparency=low

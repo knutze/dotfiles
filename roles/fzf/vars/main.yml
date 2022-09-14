@@ -1,0 +1,13 @@
+---
+
+# fzf_latest: >-
+#   {{ (lookup('url', 'https://api.github.com/repos/junegunn/fzf/releases/latest')
+#       |from_json)['tag_name'] }}
+
+fzf_package_name: "fzf"
+
+fzf_install_requires:
+- unzip
+
+fzf_git_repo: "https://github.com/knutze/fzf.git"
+fzf_git_version: "master"

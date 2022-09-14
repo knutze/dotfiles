@@ -3,12 +3,13 @@
 - hosts: localhost
   connection: local
   any_errors_fatal: yes
+  vars:
+    os_short_name: "{{ ansible_os_family | regex_replace('([a-zA-Z0-9]+).*', '\\1') | lower }}"
   roles:
+    - mintty
+    - bash
     - git
     - tmux
-    - ctags
-    #- ripgrep
+    - fd
     - fzf
     - vim
-    - pyenv
-    - bash

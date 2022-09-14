@@ -1,0 +1,145 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import os
+import pwd
+import re
+import time
+from datetime import datetime, timedelta
+from functools import cache
+from pathlib import Path
+from typing import Any, Generator, Iterable
+
+#############################################################################
+# proc
+
+CLK_TCK = os.sysconf(os.sysconf_names['SC_CLK_TCK'])
+DT_NOW = datetime.now()
+DT_UPTIME = DT_NOW - timedelta(
+    seconds=time.clock_gettime(time.CLOCK_MONOTONIC_RAW))
+
+
+def dt_from_jiffies(jiffies: float | int) -> datetime:
+    return DT_UPTIME + timedelta(seconds=jiffies / CLK_TCK)
+
+
+@cache
+def proc1(pid: int | str, name: str) -> str:
+    with open(f"/proc/{pid}/{name}") as f:
+        return f.readline().strip()
+
+
+class ProcInfo:
+
+    def __init__(self, pid: int) -> None:
+        self._pid = pid
+        # The time of stat retrieval should be as close as possible
+        # to the time of DT_NOW and DT_UPTIME retrieval.
+        self._stat = proc1(pid, 'stat').split(' ')
+        self._ppid = int(proc1(pid, 'ppid'))
+        self._uid = int(proc1(pid, 'uid'))
+        self._ctty = proc1(pid, 'ctty')
+        self._cmdline = proc1(pid, 'cmdline').split('\0')
+        self._stat = proc1(pid, 'stat').split(' ')
+
+    @property
+    def pid(self) -> int:
+        return self._pid
+
+    @property
+    def ppid(self) -> int:
+        return self._ppid
+
+    @property
+    def uid(self) -> int:
+        return self._uid
+
+    @property
+    def user(self) -> str:
+        try:
+            return pwd.getpwuid(self._uid).pw_name
+        except KeyError:
+            pass
+        return str(self._uid)
+
+    @property
+    def tty(self) -> str:
+        if self._ctty.startswith('/dev/'):
+            return self._ctty[5:]
+        return '?'
+
+    @property
+    def cmdline(self) -> list[str]:
+        return self._cmdline
+
+    @property
+    def stat(self) -> list[str]:
+        return self._stat
+
+    @property
+    def stime(self) -> datetime:
+        jiffies = int(self._stat[21])
+        return dt_from_jiffies(jiffies)
+
+
+pids = [
+    int(p.name) for p in Path('/proc').iterdir()
+    if p.is_dir() and str(p.name).isdigit()
+]
+pids.remove(os.getpid())  # hide myself
+
+pinfov: list[ProcInfo] = []
+for pid in sorted(pids):
+    try:
+        pinfov.append(ProcInfo(pid))
+    except FileNotFoundError:
+        continue
+
+
+def pswalk(prev: ProcInfo = None, depth: int = 0) \
+        -> Generator[tuple[ProcInfo, int], None, None]:
+    for p in pinfov:
+        if p.ppid != (prev.pid if prev else 1):
+            continue
+        yield p, depth
+        yield from pswalk(p, depth+1)
+
+
+#############################################################################
+# print
+
+HEADER = ['USER', 'PID', 'PPID', 'TTY', 'STIME', 'COMMAND']
+COLSPEC = '{:<8} {:>7} {:>7} {:<7} {:>8} {}'
+print(COLSPEC.format(*HEADER))
+
+
+@cache
+def shorten(value: Any, length: int) -> str:
+    s = str(value)
+    return s if len(s) <= length else f"~{s[-(length-1):]}"
+
+
+def fmtdt(dt: datetime) -> str:
+    if (DT_NOW - dt) < timedelta(days=1):
+        return dt.strftime('%X')
+    return dt.strftime('%m-%dT%H')
+
+
+def quote(arg: str) -> str:
+    if ' ' in arg:
+        if "'" not in arg:
+            return f"'{arg}'"
+        # TODO proper escaping
+        return '"' + re.sub('"', r'\"', arg) + '"'
+    return arg
+
+
+def viscmd(cmdline: Iterable[str], depth: int) -> str:
+    indent = (' ' * 4 * (depth - 1)) if 2 <= depth else ''
+    prefix = r' \_ ' if 1 <= depth else ''
+    return indent + prefix + ' '.join([quote(arg) for arg in cmdline])
+
+
+for p, depth in pswalk():
+    print(COLSPEC.format(
+        shorten(p.user, 8), p.pid, p.ppid, p.tty, fmtdt(p.stime),
+        viscmd(p.cmdline, depth)))

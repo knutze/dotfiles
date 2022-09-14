@@ -1,0 +1,14 @@
+---
+
+- name: include vars
+  ansible.builtin.include_vars:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ os_short_name }}.yml"
+      skip: True
+
+- name: install package
+  ansible.builtin.package:
+    name: "{{ fd_package_name }}"
+    state: present

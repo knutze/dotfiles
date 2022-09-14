@@ -3,5 +3,5 @@
 - git_config:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
-    scope: "{{ item.scope|default('global') }}"
+    scope: "{{ item.scope | default('global') }}"
   with_items: "{{ git_configs }}"
