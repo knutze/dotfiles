@@ -1,9 +1,9 @@
 ---
 
 git_configs:
-  - { name: 'core.pager', value: 'less -R' }
-  - { name: 'core.editor', value: 'vim --clean' }
   - { name: 'color.ui', value: 'auto' }
+  - { name: 'core.editor', value: 'vim --clean' }
+  - { name: 'core.pager', value: 'less -R' }
   - { name: 'fetch.prune', value: 'true' }
   - { name: 'merge.ff', value: 'false' }
   # - { name: 'pull.ff', value: 'only' }
