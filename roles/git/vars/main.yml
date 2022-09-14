@@ -1,12 +1,11 @@
 ---
 
 git_configs:
-  - { name: 'core.pager', value: 'less -r' }
-  - { name: 'core.editor', value: 'vim -u NONE -N' }
-  - { name: 'core.excludesfile',
-      value: '{{ ansible_env.HOME }}/.gitignore' }
+  - { name: 'core.pager', value: 'less -R' }
+  - { name: 'core.editor', value: 'vim --clean' }
   - { name: 'color.ui', value: 'auto' }
   - { name: 'fetch.prune', value: 'true' }
-  - { name: 'push.default', value: 'current' }
   - { name: 'merge.ff', value: 'false' }
-  - { name: 'pull.ff', value: 'only' }
+  # - { name: 'pull.ff', value: 'only' }
+  - { name: 'pull.rebase', value: 'true' }
+  - { name: 'push.default', value: 'current' }
