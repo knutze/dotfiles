@@ -47,25 +47,32 @@ _fzf_comprun() {
   esac
 }
 
-# _fzf_complete_git() {
-#   local cmd="${COMP_WORDS[@]}"
-#   # local prev=${COMP_WORDS[COMP_CWORD-1]}
-#   if [[ $cmd =~ ^git[[:blank:]]+add[[:blank:]]+.* ]]; then
-#     git -c color.status=always status -s | sed -E '/  /d' | \
-#       _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@"
-#   elif [[ $cmd =~ ^git[[:blank:]]+restore[[:blank:]]+.* ]]; then
-#     git -c color.status=always status -s | sed -En '/  /p' | \
-#       _fzf_complete "--ansi --multi ${FZF_DEFAULT_OPTS}" "$@"
-#   fi
-# }
+_fzf_complete_git() {
+  # local cmd="${COMP_WORDS[@]}"
+  local subcmd=${COMP_WORDS[COMP_CWORD-1]}
+  if [[ "${subcmd}" == 'add' ]]; then
+    _fzf_complete --ansi --multi --height 80% \
+      --preview 'git -c color.ui=always diff --unified=0 $(echo {} | sed -E "s/^..[ ]//")' \
+      -- "$@" < <(
+        git -c color.ui=always status -s | sed -En '/^.[^ ]/p'
+      )
+  elif [[ "${subcmd}" == 'restore' ]]; then
+    _fzf_complete --ansi --multi --height 80% \
+      --preview 'git -c color.ui=always diff --unified=0 -R @ $(echo {} | sed -E "s/^..[ ]//")' \
+      -- "$@" < <(
+        git -c color.ui=always status -s | sed -En '/^[^ ]/p'
+      )
+  fi
+}
 
-# _fzf_complete_git_post() {
-#   local cmd="${COMP_WORDS[@]}"
-#   if [[ $cmd =~ ^git[[:blank:]]+add[[:blank:]]+.* ]]; then
-#     sed -E 's/^ ?[^ ]+ ? //'
-#   elif [[ $cmd =~ ^git[[:blank:]]+restore[[:blank:]]+.* ]]; then
-#     sed -E 's/^ ?[^ ]+ ? //'
-#   fi
-# }
+_fzf_complete_git_post() {
+  # local cmd="${COMP_WORDS[@]}"
+  local subcmd=${COMP_WORDS[COMP_CWORD-1]}
+  if [[ "${subcmd}" == 'add' ]]; then
+    sed -E 's/^..[ ]//'
+  elif [[ "${subcmd}" == 'restore' ]]; then
+    sed -E 's/^..[ ]//'
+  fi
+}
 
-# complete -F _fzf_complete_git -o default -o bashdefault git
+complete -F _fzf_complete_git -o default -o bashdefault git
