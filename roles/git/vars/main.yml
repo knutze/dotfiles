@@ -9,3 +9,29 @@ git_configs:
   # - { name: 'pull.ff', value: 'only' }
   - { name: 'pull.rebase', value: 'true' }
   - { name: 'push.default', value: 'current' }
+  - { name: 'alias.a', value: 'add' }
+  - { name: 'alias.aa', value: 'add --all' }
+  - { name: 'alias.b', value: 'branch -vv' }
+  - { name: 'alias.ba', value: 'branch -vv --all' }
+  - { name: 'alias.br', value: 'branch -vv --remote' }
+  - { name: 'alias.c', value: 'commit' }
+  - { name: 'alias.ca', value: 'commit --amend' }
+  - { name: 'alias.co', value: 'checkout' }
+  - { name: 'alias.cp', value: 'cherry-pick' }
+  - { name: 'alias.d', value: 'diff' }
+  - { name: 'alias.du', value: 'diff @{u}' }
+  - { name: 'alias.f', value: 'fetch' }
+  - { name: 'alias.fa', value: 'fetch --all' }
+  - { name: 'alias.g', value: 'grep' }
+  - { name: 'alias.gn', value: 'grep --line-number' }
+  - { name: 'alias.l', value: 'log --oneline' }
+  - { name: 'alias.lu', value: 'log --oneline @{u}..' }
+  - { name: 'alias.lgp', value: "log --graph --date=short --color=always --pretty=format:'%C(auto)%h %cd %C(green)%cn%C(auto) %d %s'" }
+  - { name: 'alias.ls', value: 'ls-files' }
+  - { name: 'alias.m', value: 'merge' }
+  - { name: 'alias.s', value: 'status' }
+  - { name: 'alias.ss', value: 'status --short' }
+  - { name: 'alias.ssb', value: 'status --short --branch' }
+  - { name: 'alias.sw', value: 'switch' }
+  - { name: 'alias.uncommit', value: 'reset --soft HEAD^' }
+  - { name: 'alias.unstage', value: 'reset --mixed HEAD' }
