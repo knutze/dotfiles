@@ -121,7 +121,7 @@ def shorten(value: Any, length: int) -> str:
 def fmtdt(dt: datetime) -> str:
     if (DT_NOW - dt) < timedelta(days=1):
         return dt.strftime('%X')
-    return dt.strftime('%m-%dT%H')
+    return dt.strftime('%x')
 
 
 def quote(arg: str) -> str:

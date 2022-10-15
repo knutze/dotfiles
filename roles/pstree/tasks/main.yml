@@ -1,0 +1,9 @@
+---
+
+- name: include tasks
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ os_short_name }}.yml"
+      skip: True

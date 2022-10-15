@@ -6,9 +6,9 @@
     state: directory
     mode: u=rwx,g=rx,o=rx
 
-- name: file ~/.local/bin/fzf
+- name: file ~/.local/bin/pstree
   ansible.builtin.copy:
-    src: "{{ role_path }}/files/fzf"
-    dest: "{{ ansible_env.HOME }}/.local/bin/fzf"
+    src: "{{ role_path }}/files/pstree"
+    dest: "{{ ansible_env.HOME }}/.local/bin/pstree"
     mode: u=rwx,g=rx,o=rx
     force: yes

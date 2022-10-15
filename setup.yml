@@ -6,10 +6,12 @@
   vars:
     os_short_name: "{{ ansible_os_family | regex_replace('([a-zA-Z0-9]+).*', '\\1') | lower }}"
   roles:
-    - mintty
-    - bash
-    - git
-    - tmux
-    - fd
-    - fzf
-    - vim
+    - role: mintty
+    - role: bash
+    - role: git
+    - role: tmux
+    - role: fd
+    - role: fzf
+    - role: vim
+    - role: pstree
+      when: os_short_name == 'mingw64'
